@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#171b24" media="(prefers-color-scheme: dark)">
+<title>Python cheatsheet for DSA · DSA Lab</title>
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/mobile.css">
+<script>try{var t=localStorage.getItem('dsa.theme');if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
+
+</head>
+<body class="page-doc" data-rel="">
+<header class="top">
+  <a class="brand" href="index.html"><span class="logo">⟨/⟩</span> DSA Lab <small>NeetCode 250 · Python</small></a>
+  <nav class="main-nav"><a href="index.html">Home</a><a href="roadmap.html">Roadmap</a><a href="guides.html">Guides</a><a href="videos.html">Videos</a><a href="cheatsheet.html">Python cheatsheet</a><a href="big-o.html">Big-O</a><a href="progress.html">Progress</a></nav>
+  <div class="tools">
+    <button class="btn ghost nav-toggle" id="nav-btn" type="button" aria-label="Menu" aria-expanded="false">☰ Menu</button>
+    <button class="btn ghost" id="search-btn" type="button" title="Search (Ctrl+K)"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/></svg> Search</button>
+    <button class="btn ghost" id="theme-btn" type="button" title="Toggle theme">◐</button>
+  </div>
+</header>
+<main>
+<article class="doc"><h1>Python cheatsheet for DSA</h1><p>Everything on this page is standard library. These are the tools that come up again and again in the 250 problems.</p>
+<h4>Lists (arrays and stacks)</h4>
+<div class="code numbered" data-lang="python"><button class="copy" type="button" title="Copy code">Copy</button><pre style="--lines:15"><code>nums <span class="o">=</span> <span class="o">[</span><span class="n">3</span><span class="o">,</span> <span class="n">1</span><span class="o">,</span> <span class="n">2</span><span class="o">]</span>
+nums<span class="o">.</span>append<span class="o">(</span><span class="n">4</span><span class="o">)</span>        <span class="c"># push, O(1)</span>
+nums<span class="o">.</span>pop<span class="o">(</span><span class="o">)</span>            <span class="c"># pop last, O(1)      -&gt; 4</span>
+nums<span class="o">.</span>pop<span class="o">(</span><span class="n">0</span><span class="o">)</span>           <span class="c"># pop FIRST, O(n)!    use deque instead</span>
+nums<span class="o">[</span><span class="o">-</span><span class="n">1</span><span class="o">]</span>              <span class="c"># peek last</span>
+nums<span class="o">[</span><span class="n">1</span><span class="o">:</span><span class="n">3</span><span class="o">]</span>             <span class="c"># slice copy [1, 2], O(k)</span>
+nums<span class="o">.</span>sort<span class="o">(</span><span class="o">)</span>           <span class="c"># in place, O(n log n), stable</span>
+<span class="b">sorted</span><span class="o">(</span>nums<span class="o">,</span> key<span class="o">=</span><span class="k">lambda</span> x<span class="o">:</span> <span class="o">-</span>x<span class="o">)</span>        <span class="c"># new list, descending</span>
+<span class="b">sorted</span><span class="o">(</span>pairs<span class="o">,</span> key<span class="o">=</span><span class="k">lambda</span> p<span class="o">:</span> <span class="o">(</span>p<span class="o">[</span><span class="n">0</span><span class="o">]</span><span class="o">,</span> <span class="o">-</span>p<span class="o">[</span><span class="n">1</span><span class="o">]</span><span class="o">)</span><span class="o">)</span>   <span class="c"># sort by first asc, then second desc</span>
+nums<span class="o">.</span>reverse<span class="o">(</span><span class="o">)</span><span class="o">;</span> nums<span class="o">[</span><span class="o">:</span><span class="o">:</span><span class="o">-</span><span class="n">1</span><span class="o">]</span>            <span class="c"># in place / copy</span>
+<span class="o">[</span><span class="n">0</span><span class="o">]</span> <span class="o">*</span> n               <span class="c"># n zeros</span>
+<span class="o">[</span><span class="o">[</span><span class="n">0</span><span class="o">]</span> <span class="o">*</span> cols <span class="k">for</span> _ <span class="k">in</span> <span class="b">range</span><span class="o">(</span>rows<span class="o">)</span><span class="o">]</span>     <span class="c"># 2-D grid (NOT [[0]*cols]*rows: shared rows!)</span>
+<span class="b">list</span><span class="o">(</span><span class="b">range</span><span class="o">(</span>n<span class="o">)</span><span class="o">)</span>        <span class="c"># 0..n-1</span>
+<span class="k">for</span> i<span class="o">,</span> x <span class="k">in</span> <span class="b">enumerate</span><span class="o">(</span>nums<span class="o">)</span><span class="o">:</span> <span class="o">...</span>      <span class="c"># index + value</span>
+<span class="k">for</span> a<span class="o">,</span> b <span class="k">in</span> <span class="b">zip</span><span class="o">(</span>xs<span class="o">,</span> ys<span class="o">)</span><span class="o">:</span> <span class="o">...</span>          <span class="c"># parallel iteration</span></code></pre></div>
+<h4>Dictionaries and sets (hashing)</h4>
+<div class="code numbered" data-lang="python"><button class="copy" type="button" title="Copy code">Copy</button><pre style="--lines:17"><code><span class="k">from</span> collections <span class="k">import</span> defaultdict<span class="o">,</span> Counter
+
+seen <span class="o">=</span> <span class="b">set</span><span class="o">(</span><span class="o">)</span>
+seen<span class="o">.</span>add<span class="o">(</span>x<span class="o">)</span><span class="o">;</span> x <span class="k">in</span> seen<span class="o">;</span> seen<span class="o">.</span>remove<span class="o">(</span>x<span class="o">)</span><span class="o">;</span> seen<span class="o">.</span>discard<span class="o">(</span>x<span class="o">)</span>   <span class="c"># discard: no error if missing</span>
+
+d <span class="o">=</span> <span class="o">{</span><span class="o">}</span>
+d<span class="o">.</span>get<span class="o">(</span>k<span class="o">,</span> <span class="n">0</span><span class="o">)</span>                      <span class="c"># default if missing</span>
+d<span class="o">[</span>k<span class="o">]</span> <span class="o">=</span> d<span class="o">.</span>get<span class="o">(</span>k<span class="o">,</span> <span class="n">0</span><span class="o">)</span> <span class="o">+</span> <span class="n">1</span>           <span class="c"># count</span>
+count <span class="o">=</span> defaultdict<span class="o">(</span><span class="b">int</span><span class="o">)</span>         <span class="c"># missing key -&gt; 0</span>
+groups <span class="o">=</span> defaultdict<span class="o">(</span><span class="b">list</span><span class="o">)</span>       <span class="c"># missing key -&gt; []</span>
+groups<span class="o">[</span>key<span class="o">]</span><span class="o">.</span>append<span class="o">(</span>item<span class="o">)</span>
+
+c <span class="o">=</span> Counter<span class="o">(</span><span class="s">&quot;banana&quot;</span><span class="o">)</span>            <span class="c"># {&#x27;a&#x27;: 3, &#x27;n&#x27;: 2, &#x27;b&#x27;: 1}</span>
+c<span class="o">.</span>most_common<span class="o">(</span><span class="n">2</span><span class="o">)</span>                 <span class="c"># [(&#x27;a&#x27;, 3), (&#x27;n&#x27;, 2)]</span>
+Counter<span class="o">(</span>a<span class="o">)</span> <span class="o">==</span> Counter<span class="o">(</span>b<span class="o">)</span>         <span class="c"># anagram check</span>
+
+<span class="b">tuple</span><span class="o">(</span><span class="b">sorted</span><span class="o">(</span>word<span class="o">)</span><span class="o">)</span>              <span class="c"># hashable key for a group of anagrams</span></code></pre></div>
+<p>Keys must be <strong>hashable</strong>: ints, strings, tuples — not lists. Convert <code>list -&gt; tuple</code> when you need a list as a key.</p>
+<h4>Queues and deques</h4>
+<div class="code numbered" data-lang="python"><button class="copy" type="button" title="Copy code">Copy</button><pre style="--lines:6"><code><span class="k">from</span> collections <span class="k">import</span> deque
+q <span class="o">=</span> deque<span class="o">(</span><span class="o">[</span>start<span class="o">]</span><span class="o">)</span>
+q<span class="o">.</span>append<span class="o">(</span>x<span class="o">)</span>           <span class="c"># push back</span>
+q<span class="o">.</span>popleft<span class="o">(</span><span class="o">)</span>           <span class="c"># pop front, O(1)</span>
+q<span class="o">.</span>appendleft<span class="o">(</span>x<span class="o">)</span><span class="o">;</span> q<span class="o">.</span>pop<span class="o">(</span><span class="o">)</span>         <span class="c"># it&#x27;s double-ended</span>
+q<span class="o">[</span><span class="n">0</span><span class="o">]</span><span class="o">;</span> q<span class="o">[</span><span class="o">-</span><span class="n">1</span><span class="o">]</span>           <span class="c"># peek front / back</span></code></pre></div>
+<h4>Heaps (priority queues)</h4>
+<div class="code numbered" data-lang="python"><button class="copy" type="button" title="Copy code">Copy</button><pre style="--lines:10"><code><span class="k">import</span> heapq
+h <span class="o">=</span> <span class="o">[</span><span class="o">]</span>                            <span class="c"># a plain list is the heap</span>
+heapq<span class="o">.</span>heappush<span class="o">(</span>h<span class="o">,</span> <span class="o">(</span>priority<span class="o">,</span> item<span class="o">)</span><span class="o">)</span>
+priority<span class="o">,</span> item <span class="o">=</span> heapq<span class="o">.</span>heappop<span class="o">(</span>h<span class="o">)</span> <span class="c"># smallest priority first</span>
+h<span class="o">[</span><span class="n">0</span><span class="o">]</span>                              <span class="c"># peek smallest</span>
+heapq<span class="o">.</span>heapify<span class="o">(</span>nums<span class="o">)</span>               <span class="c"># O(n), in place</span>
+heapq<span class="o">.</span>nlargest<span class="o">(</span>k<span class="o">,</span> nums<span class="o">)</span><span class="o">;</span> heapq<span class="o">.</span>nsmallest<span class="o">(</span>k<span class="o">,</span> nums<span class="o">,</span> key<span class="o">=</span><span class="o">...</span><span class="o">)</span>
+
+<span class="c"># max-heap: negate the keys</span>
+heapq<span class="o">.</span>heappush<span class="o">(</span>h<span class="o">,</span> <span class="o">-</span>x<span class="o">)</span><span class="o">;</span> largest <span class="o">=</span> <span class="o">-</span>heapq<span class="o">.</span>heappop<span class="o">(</span>h<span class="o">)</span></code></pre></div>
+<p>Only min-heaps exist. For a max-heap push <code>-x</code>. For ties, put a unique counter in the tuple so items are never compared.</p>
+<h4>Binary search</h4>
+<div class="code numbered" data-lang="python"><button class="copy" type="button" title="Copy code">Copy</button><pre style="--lines:13"><code><span class="k">import</span> bisect
+i <span class="o">=</span> bisect<span class="o">.</span>bisect_left<span class="o">(</span>a<span class="o">,</span> x<span class="o">)</span>   <span class="c"># first index with a[i] &gt;= x</span>
+j <span class="o">=</span> bisect<span class="o">.</span>bisect_right<span class="o">(</span>a<span class="o">,</span> x<span class="o">)</span>  <span class="c"># first index with a[j] &gt; x</span>
+bisect<span class="o">.</span>insort<span class="o">(</span>a<span class="o">,</span> x<span class="o">)</span>            <span class="c"># insert keeping order, O(n)</span>
+
+<span class="c"># hand-rolled template: find the smallest value where condition(mid) is True</span>
+lo<span class="o">,</span> hi <span class="o">=</span> <span class="n">0</span><span class="o">,</span> n <span class="o">-</span> <span class="n">1</span>
+<span class="k">while</span> lo <span class="o">&lt;</span> hi<span class="o">:</span>
+    mid <span class="o">=</span> <span class="o">(</span>lo <span class="o">+</span> hi<span class="o">)</span> <span class="o">//</span> <span class="n">2</span>
+    <span class="k">if</span> condition<span class="o">(</span>mid<span class="o">)</span><span class="o">:</span>
+        hi <span class="o">=</span> mid
+    <span class="k">else</span><span class="o">:</span>
+        lo <span class="o">=</span> mid <span class="o">+</span> <span class="n">1</span></code></pre></div>
+<h4>Strings</h4>
+<div class="code numbered" data-lang="python"><button class="copy" type="button" title="Copy code">Copy</button><pre style="--lines:6"><code>s<span class="o">[</span><span class="o">:</span><span class="o">:</span><span class="o">-</span><span class="n">1</span><span class="o">]</span>                 <span class="c"># reverse</span>
+s<span class="o">.</span>lower<span class="o">(</span><span class="o">)</span><span class="o">;</span> s<span class="o">.</span>isalnum<span class="o">(</span><span class="o">)</span><span class="o">;</span> s<span class="o">.</span>isdigit<span class="o">(</span><span class="o">)</span>
+<span class="s">&quot;&quot;</span><span class="o">.</span>join<span class="o">(</span>parts<span class="o">)</span>          <span class="c"># build strings with a list + join, not += in a loop</span>
+<span class="b">ord</span><span class="o">(</span><span class="s">&quot;a&quot;</span><span class="o">)</span><span class="o">;</span> <span class="b">chr</span><span class="o">(</span><span class="n">97</span><span class="o">)</span>       <span class="c"># char &lt;-&gt; code</span>
+<span class="b">ord</span><span class="o">(</span>c<span class="o">)</span> <span class="o">-</span> <span class="b">ord</span><span class="o">(</span><span class="s">&quot;a&quot;</span><span class="o">)</span>       <span class="c"># 0..25 bucket index</span>
+s<span class="o">.</span>split<span class="o">(</span><span class="o">)</span><span class="o">;</span> s<span class="o">.</span>split<span class="o">(</span><span class="s">&quot;,&quot;</span><span class="o">)</span> <span class="o">;</span> <span class="s">&quot; &quot;</span><span class="o">.</span>join<span class="o">(</span>words<span class="o">)</span></code></pre></div>
+<p>Strings are <strong>immutable</strong>: <code>s += c</code> in a loop is O(n²). Collect pieces in a list and <code>&quot;&quot;.join</code> once.</p>
+<h4>Recursion and memoisation</h4>
+<div class="code numbered" data-lang="python"><button class="copy" type="button" title="Copy code">Copy</button><pre style="--lines:9"><code><span class="k">from</span> functools <span class="k">import</span> lru_cache
+
+<span class="o">@</span>lru_cache<span class="o">(</span>maxsize<span class="o">=</span><span class="k">None</span><span class="o">)</span>        <span class="c"># or @cache in Python 3.9+</span>
+<span class="k">def</span> <span class="f">f</span><span class="o">(</span>i<span class="o">,</span> j<span class="o">)</span><span class="o">:</span>
+    <span class="k">if</span> i <span class="o">==</span> <span class="n">0</span><span class="o">:</span> <span class="k">return</span> <span class="n">1</span>          <span class="c"># base case first</span>
+    <span class="k">return</span> f<span class="o">(</span>i <span class="o">-</span> <span class="n">1</span><span class="o">,</span> j<span class="o">)</span> <span class="o">+</span> f<span class="o">(</span>i<span class="o">,</span> j <span class="o">-</span> <span class="n">1</span><span class="o">)</span>
+
+<span class="k">import</span> sys
+sys<span class="o">.</span>setrecursionlimit<span class="o">(</span><span class="n">10_000</span><span class="o">)</span>   <span class="c"># LeetCode&#x27;s default is higher than CPython&#x27;s 1000</span></code></pre></div>
+<p>Arguments must be hashable (no lists). Memoised recursion (&quot;top-down DP&quot;) is usually the fastest route to a correct DP; convert to a table (&quot;bottom-up&quot;) afterwards if asked.</p>
+<h4>Linked lists and trees (LeetCode classes)</h4>
+<div class="code numbered" data-lang="python"><button class="copy" type="button" title="Copy code">Copy</button><pre style="--lines:12"><code><span class="k">class</span> <span class="f">ListNode</span><span class="o">:</span>
+    <span class="k">def</span> <span class="f">__init__</span><span class="o">(</span><span class="v">self</span><span class="o">,</span> val<span class="o">=</span><span class="n">0</span><span class="o">,</span> <span class="b">next</span><span class="o">=</span><span class="k">None</span><span class="o">)</span><span class="o">:</span>
+        <span class="v">self</span><span class="o">.</span>val<span class="o">,</span> <span class="v">self</span><span class="o">.</span><span class="b">next</span> <span class="o">=</span> val<span class="o">,</span> <span class="b">next</span>
+
+<span class="k">class</span> <span class="f">TreeNode</span><span class="o">:</span>
+    <span class="k">def</span> <span class="f">__init__</span><span class="o">(</span><span class="v">self</span><span class="o">,</span> val<span class="o">=</span><span class="n">0</span><span class="o">,</span> left<span class="o">=</span><span class="k">None</span><span class="o">,</span> right<span class="o">=</span><span class="k">None</span><span class="o">)</span><span class="o">:</span>
+        <span class="v">self</span><span class="o">.</span>val<span class="o">,</span> <span class="v">self</span><span class="o">.</span>left<span class="o">,</span> <span class="v">self</span><span class="o">.</span>right <span class="o">=</span> val<span class="o">,</span> left<span class="o">,</span> right
+
+dummy <span class="o">=</span> ListNode<span class="o">(</span><span class="n">0</span><span class="o">,</span> head<span class="o">)</span>       <span class="c"># dummy head: makes &#x27;delete the first node&#x27; a normal case</span>
+slow <span class="o">=</span> fast <span class="o">=</span> head               <span class="c"># two pointers</span>
+<span class="k">while</span> fast <span class="k">and</span> fast<span class="o">.</span><span class="b">next</span><span class="o">:</span>
+    slow<span class="o">,</span> fast <span class="o">=</span> slow<span class="o">.</span><span class="b">next</span><span class="o">,</span> fast<span class="o">.</span><span class="b">next</span><span class="o">.</span><span class="b">next</span>   <span class="c"># slow stops at the middle</span></code></pre></div>
+<h4>Grids and graphs</h4>
+<div class="code numbered" data-lang="python"><button class="copy" type="button" title="Copy code">Copy</button><pre style="--lines:15"><code>rows<span class="o">,</span> cols <span class="o">=</span> <span class="b">len</span><span class="o">(</span>grid<span class="o">)</span><span class="o">,</span> <span class="b">len</span><span class="o">(</span>grid<span class="o">[</span><span class="n">0</span><span class="o">]</span><span class="o">)</span>
+DIRS <span class="o">=</span> <span class="o">[</span><span class="o">(</span><span class="n">1</span><span class="o">,</span> <span class="n">0</span><span class="o">)</span><span class="o">,</span> <span class="o">(</span><span class="o">-</span><span class="n">1</span><span class="o">,</span> <span class="n">0</span><span class="o">)</span><span class="o">,</span> <span class="o">(</span><span class="n">0</span><span class="o">,</span> <span class="n">1</span><span class="o">)</span><span class="o">,</span> <span class="o">(</span><span class="n">0</span><span class="o">,</span> <span class="o">-</span><span class="n">1</span><span class="o">)</span><span class="o">]</span>
+<span class="k">for</span> dr<span class="o">,</span> dc <span class="k">in</span> DIRS<span class="o">:</span>
+    r<span class="o">,</span> c <span class="o">=</span> row <span class="o">+</span> dr<span class="o">,</span> col <span class="o">+</span> dc
+    <span class="k">if</span> <span class="n">0</span> <span class="o">&lt;=</span> r <span class="o">&lt;</span> rows <span class="k">and</span> <span class="n">0</span> <span class="o">&lt;=</span> c <span class="o">&lt;</span> cols <span class="k">and</span> grid<span class="o">[</span>r<span class="o">]</span><span class="o">[</span>c<span class="o">]</span> <span class="o">==</span> <span class="n">1</span><span class="o">:</span> <span class="o">...</span>
+
+adj <span class="o">=</span> defaultdict<span class="o">(</span><span class="b">list</span><span class="o">)</span>
+<span class="k">for</span> u<span class="o">,</span> v <span class="k">in</span> edges<span class="o">:</span>
+    adj<span class="o">[</span>u<span class="o">]</span><span class="o">.</span>append<span class="o">(</span>v<span class="o">)</span><span class="o">;</span> adj<span class="o">[</span>v<span class="o">]</span><span class="o">.</span>append<span class="o">(</span>u<span class="o">)</span>    <span class="c"># undirected</span>
+
+visited <span class="o">=</span> <span class="b">set</span><span class="o">(</span><span class="o">)</span>
+<span class="k">def</span> <span class="f">dfs</span><span class="o">(</span>node<span class="o">)</span><span class="o">:</span>
+    <span class="k">if</span> node <span class="k">in</span> visited<span class="o">:</span> <span class="k">return</span>
+    visited<span class="o">.</span>add<span class="o">(</span>node<span class="o">)</span>
+    <span class="k">for</span> nb <span class="k">in</span> adj<span class="o">[</span>node<span class="o">]</span><span class="o">:</span> dfs<span class="o">(</span>nb<span class="o">)</span></code></pre></div>
+<h4>Bits</h4>
+<div class="code numbered" data-lang="python"><button class="copy" type="button" title="Copy code">Copy</button><pre style="--lines:6"><code>x <span class="o">&amp;</span> <span class="n">1</span>                 <span class="c"># last bit</span>
+x <span class="o">&gt;&gt;</span> <span class="n">1</span><span class="o">;</span> x <span class="o">&lt;&lt;</span> <span class="n">1</span>        <span class="c"># halve / double</span>
+x <span class="o">&amp;</span> <span class="o">(</span>x <span class="o">-</span> <span class="n">1</span><span class="o">)</span>           <span class="c"># clears the lowest set bit (count bits, power-of-two test)</span>
+x <span class="o">^</span> y                 <span class="c"># XOR: a ^ a == 0, a ^ 0 == a</span>
+<span class="b">bin</span><span class="o">(</span>x<span class="o">)</span><span class="o">.</span>count<span class="o">(</span><span class="s">&quot;1&quot;</span><span class="o">)</span>     <span class="c"># popcount (or x.bit_count() in 3.10+)</span>
+mask <span class="o">=</span> <span class="n">0xFFFFFFFF</span>     <span class="c"># keep 32 bits when simulating fixed-width ints</span></code></pre></div>
+<h4>Small things that save time</h4>
+<div class="code numbered" data-lang="python"><button class="copy" type="button" title="Copy code">Copy</button><pre style="--lines:6"><code><span class="b">float</span><span class="o">(</span><span class="s">&quot;inf&quot;</span><span class="o">)</span><span class="o">,</span> <span class="b">float</span><span class="o">(</span><span class="s">&quot;-inf&quot;</span><span class="o">)</span>     <span class="c"># sentinels for min/max</span>
+a<span class="o">,</span> b <span class="o">=</span> b<span class="o">,</span> a                      <span class="c"># swap</span>
+<span class="b">divmod</span><span class="o">(</span>x<span class="o">,</span> <span class="n">10</span><span class="o">)</span>                    <span class="c"># (x // 10, x % 10)</span>
+math<span class="o">.</span>inf<span class="o">,</span> math<span class="o">.</span>gcd<span class="o">,</span> math<span class="o">.</span>isqrt
+<span class="b">any</span><span class="o">(</span><span class="o">...</span><span class="o">)</span><span class="o">,</span> <span class="b">all</span><span class="o">(</span><span class="o">...</span><span class="o">)</span><span class="o">,</span> <span class="b">min</span><span class="o">(</span>xs<span class="o">,</span> key<span class="o">=</span><span class="o">...</span><span class="o">)</span><span class="o">,</span> <span class="b">max</span><span class="o">(</span>xs<span class="o">,</span> default<span class="o">=</span><span class="n">0</span><span class="o">)</span>
+itertools<span class="o">.</span>accumulate<span class="o">(</span>nums<span class="o">)</span>       <span class="c"># prefix sums</span></code></pre></div>
+<h4>Python complexity reference</h4>
+<div class="table-wrap"><table><thead><tr><th>Operation</th><th>Cost</th></tr></thead><tbody><tr><td><code>x in list</code></td><td>O(n)</td></tr><tr><td><code>x in set</code> / <code>x in dict</code></td><td>O(1) average</td></tr><tr><td><code>list.append</code> / <code>pop()</code></td><td>O(1)</td></tr><tr><td><code>list.insert(0, x)</code> / <code>pop(0)</code></td><td>O(n)</td></tr><tr><td><code>sorted(xs)</code></td><td>O(n log n)</td></tr><tr><td><code>heapq.heappush/heappop</code></td><td>O(log n)</td></tr><tr><td><code>heapq.heapify</code></td><td>O(n)</td></tr><tr><td>string <code>+=</code> in a loop</td><td>O(n²) total</td></tr><tr><td>slicing <code>xs[a:b]</code></td><td>O(b − a)</td></tr></tbody></table></div></article>
+</main>
+<footer class="foot">Local site · built 2026-11-04 20:54 · everything runs in your browser, nothing is sent anywhere.</footer>
+<nav class="tabbar" aria-label="Main"><a href="index.html" data-tab="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5"/><path d="M5 10v10h14V10"/></svg>Home</a><a href="roadmap.html" data-tab="roadmap.html"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="5" r="2.2"/><circle cx="18" cy="12" r="2.2"/><circle cx="8" cy="19" r="2.2"/><path d="M8 6.5c4 1 6 2.5 8 4"/><path d="M16 13.5c-3 2-5 3-7 3.5"/></svg>Roadmap</a><a href="guides.html" data-tab="guides.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 18h16"/><path d="M8 7h8"/><path d="M8 11h6"/></svg>Guides</a><a href="videos.html" data-tab="videos.html"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m10 9 5 3-5 3z"/></svg>Videos</a><a href="progress.html" data-tab="progress.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h16"/><path d="M6 16V11"/><path d="M11 16V6"/><path d="M16 16v-3"/></svg>Progress</a></nav>
+<div id="search-modal" class="modal" hidden>
+  <div class="modal-box">
+    <input id="search-input" type="search" placeholder="Jump to a problem or topic…" autocomplete="off">
+    <ul id="search-results"></ul>
+    <div class="hint">↑↓ to move · Enter to open · Esc to close</div>
+  </div>
+</div>
+<script src="assets/index-data.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,211 @@
+/* DSA Lab — phone and touch layer. Loaded after style.css on every page.
+   Two kinds of rules: layout for narrow screens (max-width: 760px) and ergonomics for touch
+   (pointer: coarse), so a phone gets both and a small desktop window only the first. */
+
+:root { --sai-top: env(safe-area-inset-top, 0px); --sai-bottom: env(safe-area-inset-bottom, 0px);
+        --sai-left: env(safe-area-inset-left, 0px); --sai-right: env(safe-area-inset-right, 0px); --tabbar-h: 58px; }
+body { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+
+/* base rules for things the media queries below switch on (must come first: same specificity, later wins) */
+.tabbar { display: none; }
+.ls-row { display: contents; }
+.ls-resume-pill { display: none; position: absolute; left: 50%; bottom: 3.4rem; transform: translateX(-50%); z-index: 4; border-radius: 999px;
+                  padding: .55rem 1.2rem; font-size: 1rem; font-weight: 700; box-shadow: var(--shadow); align-items: center; gap: .4rem; }
+
+@media (max-width: 760px) {
+  html { scroll-padding-top: 60px; }
+  body { padding-bottom: calc(var(--tabbar-h) + var(--sai-bottom)); }
+  body.in-app .foot { display: none; }
+
+  /* header: brand + tools only; the nav lives in the tab bar */
+  .top { padding: .45rem .7rem; padding-top: calc(.45rem + var(--sai-top)); gap: .5rem; }
+  .brand small { display: none; }
+  .main-nav, .top .tools .nav-toggle { display: none !important; }
+  .tools { margin-left: auto; }
+  #search-btn { font-size: .9rem; }
+
+  .tabbar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; display: grid; grid-template-columns: repeat(5, 1fr);
+            height: calc(var(--tabbar-h) + var(--sai-bottom)); padding: 0 var(--sai-right) var(--sai-bottom) var(--sai-left);
+            background: var(--bg2); border-top: 1px solid var(--border); box-shadow: 0 -4px 16px rgba(20,24,40,.06); }
+  .tabbar a { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; color: var(--muted);
+              font-size: .68rem; font-weight: 600; letter-spacing: .01em; text-decoration: none; -webkit-tap-highlight-color: transparent; }
+  .tabbar a svg { width: 24px; height: 24px; stroke: currentColor; fill: none; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+  .tabbar a.active { color: var(--accent); }
+  .tabbar a.active svg { stroke-width: 2.3; }
+  .tabbar a:active { background: var(--accent-soft); }
+
+  /* page frame */
+  main { padding: .9rem .75rem 1.5rem; }
+  .card { padding: .85rem .8rem; margin: .8rem 0; border-radius: 12px; }
+  h1 { font-size: 1.45rem; }
+  h2 { font-size: 1.15rem; }
+  .hero { padding: .4rem 0 1rem; gap: 1rem; }
+  .hero h1 { font-size: 1.75rem; }
+  .lead, .summary { font-size: 1rem; }
+  .hero-actions .btn { flex: 1 1 auto; justify-content: center; }
+  .topic-grid, .topic-blocks { grid-template-columns: 1fr; }
+  .pager { flex-direction: column; }
+  .pager a { max-width: none; text-align: center; }
+  .title-row { flex-direction: column; align-items: stretch; gap: .5rem; }
+  .title-tools { justify-content: space-between; }
+  .constraints { columns: 1; }
+  select { max-width: 100%; }
+  .pg-top label { display: flex; flex-direction: column; gap: .2rem; width: 100%; }
+  .pg-top select, .viz-top select { width: 100%; min-width: 0; }
+  .tabbar { max-width: 100vw; }
+  /* nothing may force the page wider than the screen: grid/flex children shrink, long words wrap */
+  .compare, .compare > *, .gtabs, .tab-panel, .accordion, .blk, .card, .example, .idea, .panel { min-width: 0; max-width: 100%; }
+  .compare { grid-template-columns: minmax(0, 1fr); }
+  .calc, .calc > div, .calc .in, .calc .out, .calc label, .story, .drill, .matrix-wrap, .practice, .checklist { min-width: 0; max-width: 100%; }
+  .calc label { flex-wrap: wrap; }
+  .calc label > span:first-child { flex: 1 1 100%; overflow-wrap: anywhere; }
+  .calc label input { width: 8em; max-width: 60vw; }
+  .calc .out { flex-wrap: wrap; }
+  .calc .out b { white-space: normal; overflow-wrap: anywhere; }
+  .calc .expr { display: block; overflow-wrap: anywhere; }
+  p, li, td, th, h1, h2, h3, h4, .summary, .viz-msg, .ls-cap-text, .example div { overflow-wrap: anywhere; }
+  code:not(pre code) { white-space: normal; overflow-wrap: anywhere; }
+  .callout, .callout *, .ls-callout, .md, .md * { min-width: 0; overflow-wrap: anywhere; }
+
+  /* approach tabs scroll sideways instead of wrapping into three lines */
+  .tabs { flex-wrap: nowrap; overflow-x: auto; scroll-snap-type: x proximity; -ms-overflow-style: none; scrollbar-width: none; gap: 0; }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab { white-space: nowrap; scroll-snap-align: start; padding: .7rem .8rem; }
+
+  /* tables and code scroll rather than squash */
+  table { display: block; overflow-x: auto; max-width: 100%; }
+  table thead, table tbody { display: table; width: 100%; }
+  .compare table, .accordion table, .tab-panel table, .callout table { display: block; width: auto; }
+  .compare table thead, .compare table tbody { width: auto; min-width: 100%; }
+  th, td { overflow-wrap: anywhere; min-width: 0; }
+  .result-view, .note-view, .var, .kv, .frame, .viz-msg, .ls-callout .ls-big { max-width: 100%; white-space: normal; overflow-wrap: anywhere; }
+  .var { display: inline-flex; flex-wrap: wrap; }
+  .quiz .opt, .quiz .opt span, .quiz .qt, .quiz .why, .fcard, .fcard *, .checklist li, .accordion summary, .accordion .acc-body { min-width: 0; overflow-wrap: anywhere; }
+  .quiz .opt { flex-wrap: wrap; }
+  .code pre { font-size: .8rem; padding: .75rem .8rem; }
+  .code.numbered pre { padding-left: 2.9rem; }
+  .code .gutter { width: 2.2rem; font-size: .8rem; }
+  .roadmap-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 1rem -.75rem; padding: 0 .75rem; }
+  .roadmap-wrap .roadmap { min-width: 760px; }
+
+  /* visualiser: one row per view, scroll sideways; never shrink the drawing until it is unreadable */
+  .viz { padding: .6rem; }
+  .viz-top { gap: .5rem; }
+  .viz-top label { display: flex; flex-direction: column; gap: .2rem; flex: 1; }
+  .viz-input { max-width: 100%; }
+  .viz-views { flex-direction: column; flex-wrap: nowrap; gap: .8rem; align-items: stretch; }
+  .view { max-width: 100%; overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; padding-bottom: 2px; }
+  .cells { flex-wrap: nowrap; }
+  .cell { min-width: 32px; height: 34px; font-size: .85rem; }
+  svg.ds { max-width: none; }
+  /* Graphs (rings, DAGs, dependency graphs) are 2-D pictures: clipping half of one is worse than smaller labels,
+     so they shrink to the screen width (the viewBox keeps the aspect ratio). Arrays, grids and trees keep scrolling. */
+  .view-graph svg.ds { max-width: 100%; height: auto; }
+  /* Long bit strings (21-32 bits) wrap into labelled rows instead of running off the edge; the row gap leaves room
+     for the per-cell bit index drawn 15px above each cell. */
+  .bits-view { flex-wrap: wrap; row-gap: 20px; }
+  .map-view { max-width: none; }
+  .viz-msg { font-size: .95rem; }
+  .example-figure .figure-views { flex-wrap: nowrap; }
+  .example-figure .figure-views .view { flex: none; }
+
+  /* visualiser controls: buttons in one row, the scrubber on its own row below */
+  .viz-controls { gap: .35rem; }
+  .viz-controls input[type=range] { flex-basis: 100%; order: 10; margin: .2rem 0 0; }
+  .viz-controls .viz-step { order: 11; min-width: 0; margin-right: auto; }
+  .viz-controls select { order: 12; }
+  .viz-controls .btn.primary { flex: 1; justify-content: center; }
+
+  /* guide chapters: the article must be allowed to shrink below its widest child (scrolling SVGs, code) */
+  .guide-wrap { grid-template-columns: minmax(0, 1fr); }
+  .guide, .guide-toc { min-width: 0; max-width: 100%; }
+  .crumbs { white-space: normal; overflow-wrap: anywhere; }
+  /* guide chapters: table of contents collapses behind its title */
+  .guide-toc { position: static; max-height: none; padding: .6rem .8rem; border: 1px solid var(--border); border-radius: 12px; background: var(--bg2); margin-bottom: .8rem; }
+  .guide-toc .toc-title { margin: 0; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+  .guide-toc .toc-title::after { content: "▾"; color: var(--muted); }
+  .guide-toc.open .toc-title::after { content: "▴"; }
+  .guide-toc ol { display: none; margin: .4rem 0 0; }
+  .guide-toc.open ol { display: block; }
+  .guide-toc .toc-meta { font-size: .8rem; }
+  .guide-toc li { display: flex; align-items: baseline; gap: .5rem; }
+  .guide-toc li a:first-child { flex: 1; }
+  .guide-toc li .toc-video { flex: none; display: inline-block; padding: .2rem .5rem; }
+  .mermaid-out { overflow-x: auto; -webkit-overflow-scrolling: touch; justify-content: flex-start !important; }
+  .mermaid-out svg { max-width: none !important; }
+  .mermaid-box .zoom { display: none; }
+
+  /* search: a sheet from the top */
+  .modal { padding-top: 0; align-items: stretch; }
+  .modal-box { width: 100%; border-radius: 0 0 14px 14px; padding: .6rem .6rem calc(.6rem + var(--sai-bottom)); max-height: 100vh; display: flex; flex-direction: column; }
+  #search-results { max-height: none; flex: 1; }
+  .modal .hint { display: none; }
+
+  /* video lesson player */
+  .lesson-card h2, .lesson-embed h3 { font-size: 1.05rem; }
+  .ls-stage { min-height: min(62vh, 520px); }
+  .ls-scene { padding: .8rem .75rem 3.6rem; max-height: 68vh; }
+  .ls-slide h3 { font-size: 1.3rem; margin-bottom: .7rem; }
+  .ls-bullets li { font-size: 1rem; padding: .5rem .7rem .5rem 2rem; }
+  .ls-bullets li::before { left: .8rem; }
+  .ls-big, .ls-q { font-size: 1.15rem; }
+  .ls-poster-title { font-size: 1.3rem; }
+  .ls-poster-hint { font-size: .8rem; }
+  .ls-caption { font-size: .98rem; padding: .5rem .8rem .6rem; }
+  .ls-head { font-size: .78rem; }
+  .ls-table { font-size: .95rem; }
+  .ls-code pre { max-height: 50vh; }
+  .ls-bar { padding: .45rem .55rem calc(.5rem); gap: .35rem .4rem; }
+  .ls-row { display: flex; align-items: center; gap: .4rem; width: 100%; }
+  .ls-row.secondary { justify-content: space-between; flex-wrap: nowrap; gap: .3rem; align-items: center; }
+  .ls-row.secondary > * { height: 40px; min-height: 40px; box-sizing: border-box; }
+  .ls-row.secondary .ls-time { height: auto; min-height: 0; }
+  .ls-row.secondary .ls-time { display: inline; font-size: .78rem; flex: 1; min-width: 0; white-space: nowrap; }
+  .ls-row.secondary .btn { min-width: 40px; flex: none; padding: .4rem .45rem; }
+  .ls-row.secondary .ls-speed { min-height: 40px; padding: .3rem .1rem; font-size: .82rem; flex: none; width: 4.6em; }
+  .ls-row.secondary .ls-cc { font-size: .7rem; }
+  .ls-play { min-width: 3.2rem; }
+  .ls-chapters { grid-template-columns: 1fr; }
+  .ls-wait { left: .6rem; right: .6rem; transform: none; white-space: normal; bottom: 3.3rem; flex-wrap: wrap; justify-content: center; }
+  .lesson.is-full .ls-caption { font-size: 1.05rem; padding: .6rem 1rem .7rem; }
+  .lesson.is-full .ls-scene { padding: 1rem 1rem 3.4rem; }
+  .lesson.is-full .ls-bar { padding-bottom: calc(.5rem + var(--sai-bottom)); }
+  .lesson.is-full .ls-stage { height: auto; flex: 1; min-height: 0; }
+  .lesson.is-full { display: flex; flex-direction: column; height: 100%; }
+}
+
+/* landscape phones: give the stage the height and tuck the controls into one row */
+@media (max-width: 960px) and (max-height: 500px) {
+  .lesson.is-full .ls-row { display: contents; }
+  .lesson.is-full .ls-stage { min-height: 0; }
+  .lesson.is-full .ls-scene { max-height: none; padding: .6rem 1rem 3rem; }
+  .lesson.is-full .ls-slide h3 { font-size: 1.25rem; margin-bottom: .5rem; }
+  .lesson.is-full .ls-bullets { gap: .35rem; }
+  .lesson.is-full .ls-bullets li { padding: .35rem .7rem .35rem 2rem; font-size: .98rem; }
+  .lesson.is-full .ls-caption { font-size: .98rem; padding: .4rem .9rem .5rem; }
+  .lesson.is-full .ls-bar { padding: .3rem .6rem; }
+  .lesson.is-full .ls-bar .btn { padding: .3rem .55rem; min-height: 38px; }
+}
+
+/* ---------- touch ergonomics (any pointer: coarse device) ---------- */
+@media (pointer: coarse) {
+  .btn { min-height: 44px; padding: .5rem .9rem; }
+  .btn.small { min-height: 40px; }
+  .btn.small.reveal, .viz-custom-slot .btn { min-height: 44px; }
+  select, input[type=search], input[type=text] { min-height: 44px; font-size: 1rem; }
+  .viz-controls .btn, .ls-bar .btn { min-width: 44px; justify-content: center; }
+  .viz-keys, .ls-keys { display: none; }
+  .code .copy { opacity: 1; min-height: 40px; min-width: 56px; }
+  .code.numbered pre { padding-top: 1.2rem; }
+  .tab { padding: .75rem .9rem; }
+  .status-select { min-height: 40px; }
+  input[type=range] { height: 32px; }
+  input[type=range]::-webkit-slider-thumb { width: 22px; height: 22px; }
+  .ls-range { height: 32px; }
+  .ls-chapters li { padding: .6rem .5rem; }
+  .fcard { min-height: 160px; }
+  .reveal { min-height: 44px; }
+  .lesson:not(.playing).started .ls-player::before { content: "Paused — step through it yourself, then tap Resume"; }
+  .lesson.started:not(.playing) .ls-resume-pill { display: inline-flex; }
+}
+

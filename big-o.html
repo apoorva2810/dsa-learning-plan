@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#171b24" media="(prefers-color-scheme: dark)">
+<title>Big-O in plain words · DSA Lab</title>
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/mobile.css">
+<script>try{var t=localStorage.getItem('dsa.theme');if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
+
+</head>
+<body class="page-doc" data-rel="">
+<header class="top">
+  <a class="brand" href="index.html"><span class="logo">⟨/⟩</span> DSA Lab <small>NeetCode 250 · Python</small></a>
+  <nav class="main-nav"><a href="index.html">Home</a><a href="roadmap.html">Roadmap</a><a href="guides.html">Guides</a><a href="videos.html">Videos</a><a href="cheatsheet.html">Python cheatsheet</a><a href="big-o.html">Big-O</a><a href="progress.html">Progress</a></nav>
+  <div class="tools">
+    <button class="btn ghost nav-toggle" id="nav-btn" type="button" aria-label="Menu" aria-expanded="false">☰ Menu</button>
+    <button class="btn ghost" id="search-btn" type="button" title="Search (Ctrl+K)"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/></svg> Search</button>
+    <button class="btn ghost" id="theme-btn" type="button" title="Toggle theme">◐</button>
+  </div>
+</header>
+<main>
+<article class="doc"><h1>Big-O in plain words</h1><p><strong>Big-O</strong> describes how the running time (or memory) of an algorithm grows as the input grows. It ignores constant
+factors and small inputs; it answers one question: <em>if I double the input, roughly how much more work is it?</em></p>
+<h4>The common classes, with a feel for each</h4>
+<div class="table-wrap"><table><thead><tr><th>Class</th><th>Name</th><th>Doubling n means…</th><th>Typical source</th></tr></thead><tbody><tr><td>O(1)</td><td>constant</td><td>same work</td><td>hash lookup, stack push/pop, arithmetic</td></tr><tr><td>O(log n)</td><td>logarithmic</td><td>one more step</td><td>binary search, heap push/pop, balanced tree</td></tr><tr><td>O(n)</td><td>linear</td><td>twice the work</td><td>one pass over the input</td></tr><tr><td>O(n log n)</td><td>linearithmic</td><td>a bit more than twice</td><td>sorting, n heap operations</td></tr><tr><td>O(n²)</td><td>quadratic</td><td>four times</td><td>nested loops over the same input</td></tr><tr><td>O(2ⁿ)</td><td>exponential</td><td>the work <em>squares</em></td><td>trying every subset</td></tr><tr><td>O(n!)</td><td>factorial</td><td>hopeless beyond ~12</td><td>trying every ordering</td></tr></tbody></table></div>
+<p>Rule of thumb for interview constraints (about 10⁸ simple operations per second):</p>
+<div class="table-wrap"><table><thead><tr><th>n up to</th><th>Target complexity</th></tr></thead><tbody><tr><td>10–12</td><td>O(n!) or O(2ⁿ · n) is fine</td></tr><tr><td>~20</td><td>O(2ⁿ)</td></tr><tr><td>~500</td><td>O(n³)</td></tr><tr><td>~5 000</td><td>O(n²)</td></tr><tr><td>~10⁶</td><td>O(n log n) or O(n)</td></tr><tr><td>~10⁸</td><td>O(n) with a small constant, or O(log n)</td></tr></tbody></table></div>
+<p>Reading the constraints before you design the algorithm tells you which complexity is <em>expected</em>.</p>
+<h4>How to count</h4>
+<ol><li><strong>Sequential steps add</strong>: a loop of n then a loop of n is 2n → O(n).</li><li><strong>Nested steps multiply</strong>: a loop of n with an inner loop of n is n·n → O(n²).</li><li><strong>Halving means log</strong>: a loop whose variable halves each time runs about log₂ n times.</li><li><strong>Drop constants and smaller terms</strong>: 3n² + 10n + 7 → O(n²).</li><li><strong>Amortised</strong>: an inner <code>while</code> that pops from a stack looks like O(n²), but if each element is pushed once and popped at most once, the total is O(n). Count how often <em>each element</em> can be touched.</li><li><strong>Recursion</strong>: count calls × work per call. <code>T(n) = 2T(n/2) + n</code> (merge sort) is O(n log n); <code>T(n) = T(n−1) + T(n−2)</code> (naive Fibonacci) is exponential.</li></ol>
+<h4>Space</h4>
+<p>Space complexity counts <em>extra</em> memory beyond the input. A hash map over n items is O(n). Recursion uses the call
+stack: depth h costs O(h), which is O(log n) for a balanced tree and O(n) for a linked list or skewed tree. &quot;In
+place&quot; means O(1) extra space, though a few variables are allowed.</p>
+<h4>Common trade-offs you will see in the 250</h4>
+<ul><li><strong>Time for space</strong>: Two Sum goes from O(n²)/O(1) to O(n)/O(n) by remembering what you saw.</li><li><strong>Sort first</strong>: many O(n²) problems become O(n log n) once sorted (two pointers, intervals, greedy).</li><li><strong>Precompute</strong>: prefix sums turn repeated O(n) range sums into O(1) queries after O(n) setup.</li><li><strong>Memoise</strong>: exponential recursion becomes polynomial when overlapping subproblems are stored (DP).</li><li><strong>Binary search on the answer</strong>: when &quot;is x feasible?&quot; is monotonic, O(n log(range)) replaces trying every x.</li></ul></article>
+</main>
+<footer class="foot">Local site · built 2026-11-04 20:54 · everything runs in your browser, nothing is sent anywhere.</footer>
+<nav class="tabbar" aria-label="Main"><a href="index.html" data-tab="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5"/><path d="M5 10v10h14V10"/></svg>Home</a><a href="roadmap.html" data-tab="roadmap.html"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="5" r="2.2"/><circle cx="18" cy="12" r="2.2"/><circle cx="8" cy="19" r="2.2"/><path d="M8 6.5c4 1 6 2.5 8 4"/><path d="M16 13.5c-3 2-5 3-7 3.5"/></svg>Roadmap</a><a href="guides.html" data-tab="guides.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 18h16"/><path d="M8 7h8"/><path d="M8 11h6"/></svg>Guides</a><a href="videos.html" data-tab="videos.html"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m10 9 5 3-5 3z"/></svg>Videos</a><a href="progress.html" data-tab="progress.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h16"/><path d="M6 16V11"/><path d="M11 16V6"/><path d="M16 16v-3"/></svg>Progress</a></nav>
+<div id="search-modal" class="modal" hidden>
+  <div class="modal-box">
+    <input id="search-input" type="search" placeholder="Jump to a problem or topic…" autocomplete="off">
+    <ul id="search-results"></ul>
+    <div class="hint">↑↓ to move · Enter to open · Esc to close</div>
+  </div>
+</div>
+<script src="assets/index-data.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>
